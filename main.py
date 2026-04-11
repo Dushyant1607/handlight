@@ -1,5 +1,9 @@
 import cv2
+import time
 from config import FRAME_WIDTH, FRAME_HEIGHT
+from hand_tracker import HandTracker
+
+tracker = HandTracker()
 
 def main():
     cap = cv2.VideoCapture(0)
@@ -13,11 +17,16 @@ def main():
         if not success:
             break
 
-        # Flip horizontally for mirror view
         frame = cv2.flip(frame, 1)
 
-        # FPS calculation
-        import time
+        frame = tracker.find_hands(frame)
+
+        landmarks = tracker.get_landmark_positions(frame)
+
+        if landmarks:
+            print(f"Thumb tip: {landmarks[4]} | Index tip: {landmarks[8]}")
+
+        # FPS
         curr_time = time.time()
         fps = 1 / (curr_time - prev_time + 1e-6)
         prev_time = curr_time
