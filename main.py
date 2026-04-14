@@ -12,6 +12,7 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
     prev_time = 0
+    brightness = 50.0  
 
     while True:
         success, frame = cap.read()
@@ -27,9 +28,11 @@ def main():
             index = landmarks[8]
             distance = math.hypot(index[0] - thumb[0],
                                   index[1] - thumb[1])
-            print(f"Distance: {int(distance)}px")
+            brightness = float(np.interp(distance,       
+                                         [MIN_DISTANCE, MAX_DISTANCE],
+                                         [0, 100]))
+            print(f"Brightness: {int(brightness)}%")
 
-            # Commit b1c2d3 — gesture visuals
             cv2.line(frame, thumb, index, (0, 255, 255), 2)
             cv2.circle(frame, thumb, 10, (255, 0, 200), cv2.FILLED)
             cv2.circle(frame, index, 10, (255, 0, 200), cv2.FILLED)
