@@ -1,4 +1,5 @@
 import cv2
+import math
 import time
 from config import FRAME_WIDTH, FRAME_HEIGHT
 from hand_tracker import HandTracker
@@ -18,15 +19,24 @@ def main():
             break
 
         frame = cv2.flip(frame, 1)
-
         frame = tracker.find_hands(frame)
-
         landmarks = tracker.get_landmark_positions(frame)
 
         if landmarks:
-            print(f"Thumb tip: {landmarks[4]} | Index tip: {landmarks[8]}")
+            thumb = landmarks[4]
+            index = landmarks[8]
+            distance = math.hypot(index[0] - thumb[0],
+                                  index[1] - thumb[1])
+            print(f"Distance: {int(distance)}px")
 
-        # FPS
+            # Commit b1c2d3 — gesture visuals
+            cv2.line(frame, thumb, index, (0, 255, 255), 2)
+            cv2.circle(frame, thumb, 10, (255, 0, 200), cv2.FILLED)
+            cv2.circle(frame, index, 10, (255, 0, 200), cv2.FILLED)
+            mid = ((thumb[0] + index[0]) // 2,
+                   (thumb[1] + index[1]) // 2)
+            cv2.circle(frame, mid, 7, (0, 255, 100), cv2.FILLED)
+
         curr_time = time.time()
         fps = 1 / (curr_time - prev_time + 1e-6)
         prev_time = curr_time
@@ -34,7 +44,7 @@ def main():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
         cv2.imshow("Brightness Control", frame)
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC to quit
+        if cv2.waitKey(1) & 0xFF == 27:
             break
 
     cap.release()
