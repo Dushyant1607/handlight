@@ -36,9 +36,7 @@ computer vision.
 | screen-brightness-control | Cross-platform brightness API |
 | NumPy | Distance-to-brightness interpolation |
 
----
-
-## Project Structure
+```
 handlight/
 ├── main.py                  # Entry point — main loop
 ├── hand_tracker.py          # MediaPipe hand detection wrapper
@@ -46,8 +44,7 @@ handlight/
 ├── config.py                # All tunable parameters
 ├── requirements.txt         # Dependencies
 └── README.md
-
----
+```
 
 ## Setup
 
