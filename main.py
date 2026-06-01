@@ -1,10 +1,13 @@
 import cv2
 import math
 import time
-from config import FRAME_WIDTH, FRAME_HEIGHT
+import numpy as np
+from config import FRAME_WIDTH, FRAME_HEIGHT, MIN_DISTANCE, MAX_DISTANCE
 from hand_tracker import HandTracker
+from brightness_controller import BrightnessController  
 
 tracker = HandTracker()
+bc = BrightnessController()                         
 
 def main():
     cap = cv2.VideoCapture(0)
@@ -12,7 +15,7 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
     prev_time = 0
-    brightness = 50.0  
+    brightness = 50.0
 
     while True:
         success, frame = cap.read()
@@ -28,9 +31,10 @@ def main():
             index = landmarks[8]
             distance = math.hypot(index[0] - thumb[0],
                                   index[1] - thumb[1])
-            brightness = float(np.interp(distance,       
+            brightness = float(np.interp(distance,
                                          [MIN_DISTANCE, MAX_DISTANCE],
                                          [0, 100]))
+            bc.set_target(brightness)                 
             print(f"Brightness: {int(brightness)}%")
 
             cv2.line(frame, thumb, index, (0, 255, 255), 2)
@@ -50,6 +54,7 @@ def main():
         if cv2.waitKey(1) & 0xFF == 27:
             break
 
+    bc.stop()                                    
     cap.release()
     cv2.destroyAllWindows()
 
