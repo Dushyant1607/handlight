@@ -18,3 +18,4 @@ BRIGHTNESS_DELTA_THRESHOLD = 3  # Only update if change > 3%
 # Display
 FRAME_WIDTH = 640
 FRAME_HEIGHT = 480
+
