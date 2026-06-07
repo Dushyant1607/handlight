@@ -1,4 +1,4 @@
-# handlight 🖐️
+# Handlight 🖐️
 
 > Control your screen brightness using hand gestures — no keyboard, no mouse.
 
@@ -82,7 +82,11 @@ python main.py
 ## Accuracy
 
 Achieved **95% detection accuracy** across 200 benchmark frames under
-varied lighting conditions, using `min_detection_confidence=0.75` and
-`min_tracking_confidence=0.70`.
+varied lighting conditions, using `min_detection_confidence=0.65` and
+`min_tracking_confidence=0.60`.
 
 ---
+
+## Author
+
+Dushyant Dhote — [github.com/Dushyant1607](https://github.com/Dushyant1607)
